@@ -122,6 +122,32 @@ use yii\helpers\Url;
 
     ]);
     ?>
+    <fieldset id="w5">
+        <legend class="text-info"><h3>4.发票相关</h3></legend>
+        <div class="col-sm-3">
+
+            <?php
+            echo Form::widget([
+                'model'=>$model,
+                'form'=>$form,
+                'attributes'=>[       // 3 column layout
+                    'bill_img1_name_unit'=>['type'=>Form::INPUT_TEXT, 'options'=>['placeholder'=>'']],
+                ],
+
+            ]);
+            ?>
+        </div>
+        <div class="col-sm-3">
+            <?php
+            echo $form->field($model, 'bill_img1')->widget('manks\FileInput', []);
+            ?>
+        </div>
+        <div class="col-sm-3">
+            <?php
+            echo  $form->field($model, 'bill01_img_add') ;
+            ?>
+        </div>
+    </fieldset>
     <?php
 
     echo Form::widget([
@@ -195,6 +221,17 @@ use yii\helpers\Url;
 </div>
 
 <?php
+$tupian_address = <<<JS
+    $(function(){
+        var bill_img1;  //发票照片
+        bill_img1 = $('#goodssku-bill_img1').val();
+        $('#goodssku-bill01_img_add').val('http://yaemart.com.cn/'+bill_img1);
+    })
+JS;
+$this->registerJs($tupian_address);
+?>
+
+<?php
 /*Yii2给必填项加星，样式如下：*/
 
 /*css input弧度*/
@@ -210,7 +247,7 @@ $JS =<<<JS
            "goodssku-hs_code","goodssku-pd_title","goodssku-pd_title_en","goodssku-image_url","goodssku-pd_costprice","goodssku-pd_costprice_code",
             "goodssku-vendor_code","goodssku-declared_value","goodssku-currency_code","goodssku-pd_length","goodssku-pd_width",
             "goodssku-declaration_item_value1", "goodssku-declaration_item_value2", "goodssku-declaration_item_value3", "goodssku-declaration_item_value4", "goodssku-declaration_item_value5",
-            "goodssku-material","goodssku-use",
+            "goodssku-material","goodssku-use","goodssku-bill_img1","goodssku-bill01_img_add",
             "goodssku-pd_height","goodssku-pd_weight","goodssku-sale_company" ,"skuvendor-vendor_code","skuvendor-bill_name",
             "skuvendor-bill_unit","skuvendor-pd_costprice","skuvendor-min_order_num","skuvendor-pd_get_days","skuvendor-origin_code"];
         var label;

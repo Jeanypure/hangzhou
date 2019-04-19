@@ -160,32 +160,32 @@ use kartik\datetime\DateTimePicker;
             <?= $form->field($model, 'bank_img_add') ?>
         </div>
     </div>
-    <fieldset id="w5">
-    <legend class="text-info"><h3>4.发票相关</h3></legend>
-    <div class="col-sm-3">
-
-        <?php
-        echo Form::widget([
-            'model'=>$model,
-            'form'=>$form,
-            'attributes'=>[       // 3 column layout
-                'bill_img1_name_unit'=>['type'=>Form::INPUT_TEXT, 'options'=>['placeholder'=>'']],
-            ],
-
-        ]);
-        ?>
-    </div>
-    <div class="col-sm-3">
-        <?php
-        echo $form->field($model, 'bill_img1')->widget('manks\FileInput', []);
-        ?>
-    </div>
-    <div class="col-sm-3">
-       <?php
-       echo  $form->field($model, 'bill01_img_add') ;
-       ?>
-    </div>
-</fieldset>
+<!--    <fieldset id="w5">-->
+<!--    <legend class="text-info"><h3>4.发票相关</h3></legend>-->
+<!--    <div class="col-sm-3">-->
+<!---->
+<!--        --><?php
+//        echo Form::widget([
+//            'model'=>$model,
+//            'form'=>$form,
+//            'attributes'=>[       // 3 column layout
+//                'bill_img1_name_unit'=>['type'=>Form::INPUT_TEXT, 'options'=>['placeholder'=>'']],
+//            ],
+//
+//        ]);
+//        ?>
+<!--    </div>-->
+<!--    <div class="col-sm-3">-->
+<!--        --><?php
+//        echo $form->field($model, 'bill_img1')->widget('manks\FileInput', []);
+//        ?>
+<!--    </div>-->
+<!--    <div class="col-sm-3">-->
+<!--       --><?php
+//       echo  $form->field($model, 'bill01_img_add') ;
+//       ?>
+<!--    </div>-->
+<!--</fieldset>-->
     <?php
     echo Form::widget([
         'model'=>$supplier_contact,
@@ -331,10 +331,10 @@ $tupian_address = <<<JS
         bank_account_data = $('#yaesupplier-bank_account_data').val();
         bill_img1 = $('#yaesupplier-bill_img1').val();
         bill_img2 = $('#yaesupplier-bill_img2').val();
-        $('#yaesupplier-bl_img_address').val('http://eaymall.com'+business_licence);
-        $('#yaesupplier-bank_img_add').val('http://eaymall.com'+bank_account_data);
-        $('#yaesupplier-bill01_img_add').val('http://eaymall.com'+bill_img1);
-        $('#yaesupplier-bill02_img_add').val('http://eaymall.com'+bill_img2);
+        $('#yaesupplier-bl_img_address').val('http://yaemart.com.cn/'+business_licence);
+        $('#yaesupplier-bank_img_add').val('http://yaemart.com.cn/'+bank_account_data);
+        $('#yaesupplier-bill01_img_add').val('http://yaemart.com.cn/'+bill_img1);
+        $('#yaesupplier-bill02_img_add').val('http://yaemart.com.cn/'+bill_img2);
        
        
     })
