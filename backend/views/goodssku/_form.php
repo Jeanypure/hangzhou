@@ -247,7 +247,7 @@ $JS =<<<JS
            "goodssku-hs_code","goodssku-pd_title","goodssku-pd_title_en","goodssku-image_url","goodssku-pd_costprice","goodssku-pd_costprice_code",
             "goodssku-vendor_code","goodssku-declared_value","goodssku-currency_code","goodssku-pd_length","goodssku-pd_width",
             "goodssku-declaration_item_value1", "goodssku-declaration_item_value2", "goodssku-declaration_item_value3", "goodssku-declaration_item_value4", "goodssku-declaration_item_value5",
-            "goodssku-material","goodssku-use","goodssku-bill_img1","goodssku-bill01_img_add",
+            "goodssku-material","goodssku-use",
             "goodssku-pd_height","goodssku-pd_weight","goodssku-sale_company" ,"skuvendor-vendor_code","skuvendor-bill_name",
             "skuvendor-bill_unit","skuvendor-pd_costprice","skuvendor-min_order_num","skuvendor-pd_get_days","skuvendor-origin_code"];
         var label;
