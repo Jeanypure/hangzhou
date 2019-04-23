@@ -223,7 +223,8 @@ $this->params['breadcrumbs'][] = $this->title;
                     'width'=>'80%'
                 ],
             ],
-
+            'pay_way',
+            'mark'
 
         ],
     ]); ?>
