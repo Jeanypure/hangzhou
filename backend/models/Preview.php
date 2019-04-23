@@ -35,9 +35,10 @@ class Preview extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['result','content'], 'required'],
-            [['priview_time'], 'safe'],
+            [['result','content','ref_url1','ref_url3','bottom_price'], 'required'],
+            [['priview_time','bottom_price'], 'safe'],
             [['member_id'], 'integer'],
+            [['bottom_price'], 'number'],
             [['member2', 'content', 'result'], 'string', 'max' => 500],
             [['product_id'], 'string', 'max' => 20],
             [['ref_url1','ref_url12','ref_url13', 'ref_url2','ref_url22','ref_url23', 'ref_url3', 'ref_url4'], 'string', 'max' => 5000],
@@ -67,6 +68,7 @@ class Preview extends \yii\db\ActiveRecord
             'ref_url3' => '1688低价链接',
             'ref_url4' => '其他链接',
             'submit_manager' => '提交?',
+            'bottom_price' => '1688最低价格(RMB)--数字',
         ];
     }
 }
