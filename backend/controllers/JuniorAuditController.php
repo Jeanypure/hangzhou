@@ -55,14 +55,16 @@ class JuniorAuditController extends Controller
     public function actionView($id)
     {
         $model = $this->findModel($id);
-        $preview = Preview::find()
-                    ->where(['product_id'=>$id])
-                    ->andWhere(['<>','member2','Becky'])
-                    ->one();
         $leader =  Yii::$app->db->createCommand("
                    select sub_company, leader from `company`
                    ")->queryAll();
-
+        foreach ($leader as $key => $value){
+            $leaderArr[] = $value['leader'];
+        }
+        $preview = Preview::find()
+                    ->where(['product_id'=>$id])
+                    ->andWhere(['in','member2',$leaderArr])
+                    ->one();
         $data = [] ;
         foreach($leader as $key=>$value){
             $data[$value['sub_company']] = $value['leader'];
