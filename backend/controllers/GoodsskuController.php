@@ -2,14 +2,14 @@
 
 namespace backend\controllers;
 
+use backend\models\YaeExchangeRate;
 use Yii;
 use backend\models\Goodssku;
 use backend\models\SkuVendor;
 use backend\models\GoodsskuSearch;
-//use yii\web\Controller;
+use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
-use yii\data\ActiveDataProvider;
 
 /**
  * GoodsskuController implements the CRUD actions for Goodssku model.
@@ -65,6 +65,7 @@ class GoodsskuController extends Controller
     {
         $goodssku = new Goodssku();
         $sku_vendor = new  SkuVendor();
+        $rate = YaeExchangeRate::findOne(1);
         $post = Yii::$app->request->post();
         if (isset($post['Goodssku']) && isset($post['SkuVendor'])) {
             $goodssku->attributes = $post['Goodssku'];
@@ -72,6 +73,7 @@ class GoodsskuController extends Controller
             $goodssku->pd_creator = Yii::$app->user->identity->username;
             $goodssku->sale_company = implode(",", $post['Goodssku']['sale_company']);
             $goodssku->vendor_code = $post['SkuVendor']['vendor_code'];
+            $goodssku->declared_value = round($post['Goodssku']['pd_costprice']/($rate->exchange_rate),2);
             $goodssku->save(false);
             $sku_vendor->sku_id = $goodssku->primaryKey;
             $sku_vendor->save(false);
@@ -94,6 +96,7 @@ class GoodsskuController extends Controller
     {
         $goodssku = $this->findModel($id);
         $sku_vendor = SkuVendor::find()->where(['sku_id' => $id])->one();
+        $rate = YaeExchangeRate::findOne(1);
         $goodssku->sale_company = explode(',', $goodssku->sale_company); //ActiveForm 指定已存的销售公司
         $post = Yii::$app->request->post();
         if (isset($post['Goodssku']) && isset($post['SkuVendor'])) {
@@ -101,6 +104,7 @@ class GoodsskuController extends Controller
             $sku_vendor->attributes = $post['SkuVendor'];
             $goodssku->sale_company = implode(",", $post['Goodssku']['sale_company']);
             $goodssku->vendor_code = $post['SkuVendor']['vendor_code'];
+            $goodssku->declared_value = round($post['Goodssku']['pd_costprice']/($rate->exchange_rate),2);
             $goodssku->save(false);
             $sku_vendor->save(false);
             return $this->redirect(['index']);
@@ -217,11 +221,11 @@ class GoodsskuController extends Controller
                 INSERT INTO goodssku (sku,pd_title,pd_title_en,hs_code,declared_value,currency_code,old_sku,is_quantity_check,contain_battery,pd_length,pd_width,pd_height,pd_weight,qty_of_ctn,ctn_length,ctn_width,ctn_height,ctn_fact_weight,
                     sale_company,vendor_code,origin_code,min_order_num,pd_get_days,pd_costprice_code,pd_costprice,bill_name,bill_unit,pd_creator,brand,sku_mark,
                     pur_info_id,image_url,pur_group,sku_create_date,sku_update_date,material,declaration_item_key1,declaration_item_value1,declaration_item_key2,declaration_item_value2,declaration_item_key3,declaration_item_value3,declaration_item_key4,declaration_item_value4,declaration_item_key5,declaration_item_value5,declaration_item_key6,declaration_item_value6,declaration_item_key7,
-                    declaration_item_value7,declaration_item_key8,declaration_item_value8,declaration_item_key9,declaration_item_value9) 
+                    declaration_item_value7,declaration_item_key8,declaration_item_value8,declaration_item_key9,declaration_item_value9,use) 
                     SELECT sku,pd_title,pd_title_en,hs_code,declared_value,currency_code,old_sku,is_quantity_check,contain_battery,pd_length,pd_width,pd_height,pd_weight,qty_of_ctn,ctn_length,ctn_width,ctn_height,ctn_fact_weight,
                     sale_company,vendor_code,origin_code,min_order_num,pd_get_days,pd_costprice_code,pd_costprice,bill_name,bill_unit,pd_creator,brand,sku_mark,
                     pur_info_id,image_url,pur_group,sku_create_date,sku_update_date,material,declaration_item_key1,declaration_item_value1,declaration_item_key2,declaration_item_value2,declaration_item_key3,declaration_item_value3,declaration_item_key4,declaration_item_value4,declaration_item_key5,declaration_item_value5,declaration_item_key6,declaration_item_value6,declaration_item_key7,declaration_item_value7,
-                    declaration_item_key8,declaration_item_value8,declaration_item_key9,declaration_item_value9 FROM goodssku WHERE sku_id=$id;
+                    declaration_item_key8,declaration_item_value8,declaration_item_key9,declaration_item_value9,use FROM goodssku WHERE sku_id=$id;
             ")->execute();
             $innerTransaction = $db->beginTransaction();
             try {
