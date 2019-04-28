@@ -52,41 +52,51 @@ class MangerAuditController extends Controller
      * @throws NotFoundHttpException
      * @throws \yii\db\Exception
      */
+
+    /**
+     * @param $id
+     * @return string|\yii\web\Response
+     * @throws NotFoundHttpException
+     * @throws \yii\db\Exception
+     */
     public function actionView($id)
     {
-
         $spur_id = Yii::$app->db->createCommand("
                    select spur_info_id  from sample where spur_info_id = $id
                   ")->queryOne();
         $master_member = Yii::$app->user->identity->username;
-
-       $preview =   Preview::find()->where(['product_id'=>$id])->all();
-       $leader =   Yii::$app->db->createCommand("
+        $preview =   Preview::find()->where(['product_id'=>$id])->all();
+        $leader =   Yii::$app->db->createCommand("
        select sub_company, leader from `company`
        ")->queryAll();
 
-       $data = [] ;
-       foreach($leader as $key=>$value){
-           $data[$value['sub_company']] = $value['leader'];
-       }
+        $data = [] ;
+        foreach($leader as $key=>$value){
+            $data[$value['sub_company']] = $value['leader'];
+        }
 
-       $num = sizeof($preview);
+        $num = sizeof($preview);
 
-       $model_update = $this->findModel($id);
-       $costprice  =  $model_update->pd_pur_costprice;
+        $model_update = $this->findModel($id);
+        $costprice  =  $model_update->pd_pur_costprice;
 
-       $exchange_rate = PurInfoController::actionExchangeRate();
-       $sid =  $this->actionCheckSample($id); //样品表的id
-       $pd_sku =  $this->actionBorn($id);    //生成sku
-
+        $exchange_rate = PurInfoController::actionExchangeRate();
+        $sid =  $this->actionCheckSample($id); //样品表的id
+        $born_sku =  $this->actionBorn($id);    //生成sku
+        $pd_sku = $born_sku.date('YmdHis');
+        $sample_sku = $born_sku.date('YmdHis');
+        $vendor_code = $born_sku.'A'.date('YmdHis');
+        $post =  Yii::$app->request->post();
         if($num ==3){
             if ($model_update->load(Yii::$app->request->post()) ) {
+                //流转产品到新部门
+                $newdepart = $this->actionCriculation($model_update,$id);
                 //采样状态 入采样流程
-                if(Yii::$app->request->post()['PurInfo']['master_result']==1 ||
-                    Yii::$app->request->post()['PurInfo']['master_result']==4){
+                if($post['PurInfo']['master_result']==1 ||
+                    $post['PurInfo']['master_result']==4){
                     if($sid != $id){
                         Yii::$app->db->createCommand("
-                        INSERT INTO `sample`  (spur_info_id,procurement_cost,pd_sku) value ($id,'$costprice','$pd_sku');
+                        INSERT INTO `sample`  (spur_info_id,procurement_cost,pd_sku,sample_sku,vendor_code) value ($id,'$costprice','$pd_sku','$sample_sku','$vendor_code');
                       ")->execute();
                     }
 
@@ -96,7 +106,7 @@ class MangerAuditController extends Controller
                        delete from sample where spur_info_id= $sid
                       ")->execute();
                     }
-                    if(Yii::$app->request->post()['PurInfo']['master_result']==2 ){//需要议价和谈其他条件
+                    if($post['PurInfo']['master_result']==2 ){//需要议价和谈其他条件
                         Yii::$app->db->createCommand("
                         update pur_info set old_costprice = pd_pur_costprice where  pur_info_id=$id
                          ")->execute();
@@ -110,6 +120,7 @@ class MangerAuditController extends Controller
 
                 return $this->redirect(['index']);
             }
+
             return $this->render('view', [
                 'model' => $this->findModel($id),
                 'preview' => $preview[0],
@@ -122,104 +133,113 @@ class MangerAuditController extends Controller
 
             ]);
         }elseif($num ==2){
-          if ($model_update->load(Yii::$app->request->post()) ) {
+            if ($model_update->load(Yii::$app->request->post()) ) {
+                //流转产品到新部门
+                $newdepart = $this->actionCriculation($model_update,$id);
+                //采样状态 入采样流程
+                if(Yii::$app->request->post()['PurInfo']['master_result']==1||
+                    Yii::$app->request->post()['PurInfo']['master_result']==4 ){
+                    if($sid != $id){
+                        Yii::$app->db->createCommand("
+                      INSERT INTO `sample`  (spur_info_id,procurement_cost,pd_sku,sample_sku,vendor_code) value ($id,'$costprice','$pd_sku','$sample_sku','$vendor_code');
+                      ")->execute();
+                    }
+                }else{
 
-              $new_member = Yii::$app->request->post()['PurInfo']['new_member']; //部门ID
-              $sid =  $this->actionCheckSample($id);
-              if(!empty($new_member)&&isset($new_member)){
+                    if($sid === $id){ //拿样状态修改其他状态 从拿样流程中删除
+                        Yii::$app->db->createCommand("
+                       delete from sample where spur_info_id= $sid
+                      ")->execute();
+                    }
+                    if(Yii::$app->request->post()['PurInfo']['master_result']==2 ){//需要议价和谈其他条件 保留旧的含税价格
+                        Yii::$app->db->createCommand("
+                        update pur_info set old_costprice = pd_pur_costprice where  pur_info_id=$id
+                     ")->execute();
+                    }
+                }
+                $model_update->master_member = $master_member;
+                $model_update->preview_status = 1;
+                $model_update->priview_time = date('Y-m-d H:i:s');
+                $model_update->save(false);
 
-                  $member2 = Yii::$app->db->createCommand("
+                return $this->redirect(['index']);
+            }
+            return $this->render('view', [
+                'model' => $this->findModel($id),
+                'preview' => $preview[0],
+                'preview2' => $preview[1],
+                'num' =>$num,
+                'model_update' =>$model_update,
+                'exchange_rate' =>$exchange_rate,
+                'data' =>$data,
+            ]);
+        }elseif($num ==1){
+            if ($model_update->load(Yii::$app->request->post())) {
+
+                //采样状态 入采样流程
+                if(Yii::$app->request->post()['PurInfo']['master_result']==1 ||
+                    Yii::$app->request->post()['PurInfo']['master_result']==4){
+                    if($sid != $id){
+                        Yii::$app->db->createCommand("
+                       INSERT INTO `sample`  (spur_info_id,procurement_cost,pd_sku,sample_sku,vendor_code) value ($id,'$costprice','$pd_sku','$sample_sku','$vendor_code');
+                      ")->execute();
+                    }
+                }else{
+                    if($sid === $id){ //拿样状态修改其他状态 从拿样流程中删除
+                        Yii::$app->db->createCommand("
+                       delete from sample where spur_info_id= $sid
+                      ")->execute();
+                    }
+                    if(Yii::$app->request->post()['PurInfo']['master_result']==2 ){//需要议价和谈其他条件 保留旧的含税价格
+                        Yii::$app->db->createCommand("
+                        update pur_info set old_costprice = pd_pur_costprice where  pur_info_id=$id
+                     ")->execute();
+                    }
+                }
+
+                $model_update->master_member = $master_member;
+                $model_update->preview_status = 1;
+                $model_update->priview_time = date('Y-m-d H:i:s');
+                $model_update->save(false);
+                return $this->redirect(['index']);
+
+            }
+
+            return $this->render('view', [
+                'model' => $this->findModel($id),
+                'num' =>$num,
+                'preview' => $preview[0],
+                'model_update' =>$model_update,
+                'exchange_rate' =>$exchange_rate,
+                'data' =>$data,
+            ]);
+
+        }
+    }/**
+ * @param $model_update
+ * @param $id
+ * @throws \yii\db\Exception
+ * @description 流转产品到新部门 删除原有部门的评论 部门号改变
+ */
+    public  function actionCriculation($model_update,$id){
+        //流转产品到新部门
+        $new_member = Yii::$app->request->post()['PurInfo']['new_member']; //部门ID
+        if(!empty($new_member)&&isset($new_member)){
+            $member2 = Yii::$app->db->createCommand("
                      select leader from company where sub_company = $new_member
                       ")->queryOne();
-
-                  if($new_member!= $model_update->pur_group){ //进入preview
-                      $model_update->pur_group = $new_member;
-                      Yii::$app->db->createCommand("
-                        INSERT INTO `preview`  (member2,product_id) value ('$member2[leader]',$id)
+            //把新部门之外的部门preview删掉
+            $delElse = Yii::$app->db->createCommand("delete from `preview` where product_id =$id and member2  in (select leader from company ) ")->execute();
+            if($new_member!= $model_update->pur_group){ //进入preview
+                $model_update->pur_group = $new_member;
+                $result = Yii::$app->db->createCommand("
+                        INSERT INTO `preview`  (member2,product_id) value ('$member2[leader]',$id);
+                        update pur_info set pur_group = $model_update->pur_group where  pur_info_id=$id;
                     ")->execute();
-
-                  }
-              }
-              //采样状态 入采样流程
-              if(Yii::$app->request->post()['PurInfo']['master_result']==1||
-                  Yii::$app->request->post()['PurInfo']['master_result']==4 ){
-                     if($sid != $id){
-                             Yii::$app->db->createCommand("
-                      INSERT INTO `sample`  (spur_info_id,procurement_cost,pd_sku) value ($id,'$costprice','$pd_sku');
-                      ")->execute();
-                     }
-              }else{
-
-                  if($sid === $id){ //拿样状态修改其他状态 从拿样流程中删除
-                      Yii::$app->db->createCommand("
-                       delete from sample where spur_info_id= $sid
-                      ")->execute();
-                  }
-                  if(Yii::$app->request->post()['PurInfo']['master_result']==2 ){//需要议价和谈其他条件 保留旧的含税价格
-                     Yii::$app->db->createCommand("
-                        update pur_info set old_costprice = pd_pur_costprice where  pur_info_id=$id
-                     ")->execute();
-                 }
-              }
-              $model_update->master_member = $master_member;
-              $model_update->preview_status = 1;
-              $model_update->priview_time = date('Y-m-d H:i:s');
-              $model_update->save(false);
-
-              return $this->redirect(['index']);
-          }
-          return $this->render('view', [
-              'model' => $this->findModel($id),
-              'preview' => $preview[0],
-              'preview2' => $preview[1],
-              'num' =>$num,
-              'model_update' =>$model_update,
-              'exchange_rate' =>$exchange_rate,
-              'data' =>$data,
-          ]);
-        }elseif($num ==1){
-          if ($model_update->load(Yii::$app->request->post())) {
-
-              //采样状态 入采样流程
-              if(Yii::$app->request->post()['PurInfo']['master_result']==1 ||
-                  Yii::$app->request->post()['PurInfo']['master_result']==4){
-                  if($sid != $id){
-                      Yii::$app->db->createCommand("
-                      INSERT INTO `sample`  (spur_info_id,procurement_cost,pd_sku) value ($id,'$costprice','$pd_sku');
-                      ")->execute();
-                  }
-              }else{
-                  if($sid === $id){ //拿样状态修改其他状态 从拿样流程中删除
-                      Yii::$app->db->createCommand("
-                       delete from sample where spur_info_id= $sid
-                      ")->execute();
-                  }
-                  if(Yii::$app->request->post()['PurInfo']['master_result']==2 ){//需要议价和谈其他条件 保留旧的含税价格
-                      Yii::$app->db->createCommand("
-                        update pur_info set old_costprice = pd_pur_costprice where  pur_info_id=$id
-                     ")->execute();
-                  }
-              }
-
-              $model_update->master_member = $master_member;
-              $model_update->preview_status = 1;
-              $model_update->priview_time = date('Y-m-d H:i:s');
-              $model_update->save(false);
-              return $this->redirect(['index']);
-
-          }
-
-          return $this->render('view', [
-              'model' => $this->findModel($id),
-              'num' =>$num,
-              'preview' => $preview[0],
-              'model_update' =>$model_update,
-              'exchange_rate' =>$exchange_rate,
-              'data' =>$data,
-          ]);
-
-      }
+            }
+        }
     }
+
 
     /**
      * Creates a new PurInfo model.
