@@ -122,7 +122,7 @@ echo GridView::widget([
         ],
         [
             'attribute'=>'formulanumeric',
-            'label'=>'含税价格(￥)',
+            'label'=>'采购单含税价格(￥)',
             'width'=>'150px',
             'hAlign'=>'right',
             'format'=>['decimal', 3],

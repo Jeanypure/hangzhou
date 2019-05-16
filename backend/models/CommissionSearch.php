@@ -47,7 +47,7 @@ class CommissionSearch extends PurInfo
                 ->select(["po.`pur_info_id`,po.`pur_group`,po.`source`,po.`pd_title`,
                 po.`pd_pic_url`,po.`purchaser`,e.`is_purchase`,po.`pd_pur_costprice`,
                 e.`has_arrival`,e.`write_date`,e.`minister_result`,e.`audit_team_result`,e.`purchaser_result`,e.`is_diff`,
-                e.`pd_sku`,
+                e.`pd_sku`,e.`formulanumeric`,
                 CASE  WHEN e.`formulanumeric` >= 150 THEN 500
                 ELSE 400 END AS 'unit_price',    
                 CASE WHEN e.`audit_team_result`=0 THEN 0
@@ -66,7 +66,8 @@ class CommissionSearch extends PurInfo
             $query = PurInfo::find()->alias('po')
                 ->select(["po.`pur_info_id`,po.`pur_group`,po.`source`,po.`pd_title`,
                 po.`pd_pic_url`,po.`purchaser`,e.`is_purchase`,po.`pd_pur_costprice`,
-                e.`has_arrival`,e.`write_date`,e.`minister_result`,e.`audit_team_result`, e.`pd_sku`,
+                e.`has_arrival`,e.`write_date`,e.`minister_result`,e.`audit_team_result`,
+                 e.`pd_sku`,e.`formulanumeric`,
                 CASE  WHEN e.`formulanumeric` >= 150 THEN 500
                 ELSE 400 END AS 'unit_price',    
                 CASE WHEN e.`audit_team_result`=0 THEN 0
@@ -85,7 +86,8 @@ class CommissionSearch extends PurInfo
             $query = PurInfo::find()->alias('po')
                 ->select(["po.`pur_info_id`,po.`pur_group`,po.`source`,po.`pd_title`,
                 po.`pd_pic_url`,po.`purchaser`,e.`is_purchase`,po.`pd_pur_costprice`,
-                e.`has_arrival`,e.`write_date`,e.`audit_team_result`, e.`pd_sku`,
+                e.`has_arrival`,e.`write_date`,e.`audit_team_result`,
+                 e.`pd_sku`,e.`formulanumeric`,
                 CASE  WHEN e.`formulanumeric` >= 150 THEN 500
                 ELSE 400 END AS 'unit_price',    
                 CASE WHEN e.`audit_team_result`=0 THEN 0
