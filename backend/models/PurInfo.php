@@ -47,7 +47,7 @@ class PurInfo extends \yii\db\ActiveRecord
     public $view_status,$submit_manager,$result, $spur_info_id, $is_agreest, $create_date,$pay_amount,$has_arrival,
         $minister_result, $write_date, $unit_price, $weight, $grade, $audit_team_result, $purchaser_result, $is_diff,
         $pd_sku,$payer,$sample_return,$is_purchase,$sure_purchase_time,$pay_at,$fact_pay_amount,$sample_submit1,
-        $sample_submit2,$submit1_at,$submit2_at,$cancel1_at,$cancel2_at,$has_pay,$is_quality,$submit_leader,$sample_sku;
+        $sample_submit2,$submit1_at,$submit2_at,$cancel1_at,$cancel2_at,$has_pay,$is_quality,$submit_leader,$sample_sku,$formulanumeric;
     /**
      * @inheritdoc
      */
