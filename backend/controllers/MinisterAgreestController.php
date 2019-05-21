@@ -185,7 +185,7 @@ class MinisterAgreestController extends Controller
         if($sample_model->load($post)){
             $sample_model->attributes = $post['Sample'];
             $minister_result = $post['Sample']['minister_result'];
-            if(isset($post['Sample']['is_purchase'])&&$post['Sample']['is_purchase']==1){
+            if(isset($post['Sample']['is_purchase'])&&$post['Sample']['is_purchase']==1){ //确定采购 1 近产品档案 2 区域组长3产品状态
                 $sample_model->sure_purchase_time = date('Y-m-d H:i:s');
                     try{
                         $sql = " SET @id = $sample_model->spur_info_id;
@@ -199,7 +199,7 @@ class MinisterAgreestController extends Controller
                     if(!empty($goodsSkuHsele['number_record'])){
                         $hs_res =  $this->actionUpdateHs($id,$model->hs_code);
                     }
-                   if($model->source == 0){
+                   if($model->source == 0){//销售推荐 3方改成一致
                         try{
                             Yii::$app->db->createCommand("
                         update sample set minister_result=3, audit_team_result=3,purchaser_result=3 where spur_info_id=$id;
@@ -228,7 +228,10 @@ class MinisterAgreestController extends Controller
                     }
 
             }
-
+           //确定退样 到样品表
+            if(isset($post['Sample']['sample_return'])&&$post['Sample']['sample_return']==1){
+               $sample_return_res = $this->actionToSampleReturn($id);
+            }
             if ($sample_model->save(false)) {
                 Yii::$app->getSession()->setFlash('success', '保存成功');
             } else {
@@ -283,7 +286,17 @@ class MinisterAgreestController extends Controller
             return $res;
         }
 
+    /**
+     * 销售退样到退样表
+     *
+     */
+        public  function  actionToSampleReturn($sample_id){
+            $sql = "insert into sample_return (sample_id) values ($sample_id)";
+            $intoRes = Yii::$app->db->createCommand($sql)->execute();
+            //todo 插入异常处理 重复记录反馈
+            return $intoRes;
 
+        }
 
     /**
      * @param $id

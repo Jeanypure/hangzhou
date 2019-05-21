@@ -100,7 +100,8 @@ class Sample extends \yii\db\ActiveRecord
             'sample_submit1' => '提交部长',
             'sample_submit2' => '提交财务',
             'is_quality' => '样品质量是否合格',
-
+            'fact_pay_amount' => '实付金额',
+            'sample_sku' => '拿样SKU'
         ];
     }
 
@@ -132,5 +133,7 @@ class Sample extends \yii\db\ActiveRecord
         //第二个参数指定 通过子表的 spur_info_id，关联主表的pur_info_id字段
         return $this->hasMany(Purinfo::className(), ['pur_info_id' => 'spur_info_id']);
     }
+
+
 }
 
