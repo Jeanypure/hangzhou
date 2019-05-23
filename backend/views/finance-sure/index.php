@@ -9,18 +9,11 @@ use kartik\daterange\DateRangePicker;
 /* @var $searchModel backend\models\SampleReturnSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = '样品退回';
+$this->title = '财务确认退样费';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="sample-return-index">
 
-    <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
-
-    <p>
-        <?php
-//        echo  Html::a('Create Sample Return', ['create'], ['class' => 'btn btn-success'])
-        ?>
-    </p>
 
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
@@ -28,9 +21,9 @@ $this->params['breadcrumbs'][] = $this->title;
         'columns' => [
             ['class' => 'kartik\grid\SerialColumn'],
             ['class' => 'kartik\grid\CheckboxColumn'],
-           /* ['class' => 'kartik\grid\ActionColumn',
+            ['class' => 'kartik\grid\ActionColumn',
                 'header' => '操作',
-                'template' => '{update} {view} {return} ',
+                'template' => ' {view} {return} ',
                 'buttons' => [
                     'view' => function ($url, $model, $key) {
                         return Html::a('<span class="glyphicon glyphicon-check"></span>', $url, [
@@ -51,8 +44,7 @@ $this->params['breadcrumbs'][] = $this->title;
                         ] );
                     },
                 ],
-            ],*/
-            ['class' => 'kartik\grid\ActionColumn'],
+            ],
             [
                 'class' => 'yii\grid\Column',
                 'headerOptions' => [

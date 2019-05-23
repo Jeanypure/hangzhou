@@ -14,13 +14,6 @@ $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="sample-return-index">
 
-    <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
-
-    <p>
-        <?php
-//        echo  Html::a('Create Sample Return', ['create'], ['class' => 'btn btn-success'])
-        ?>
-    </p>
 
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
@@ -107,28 +100,56 @@ $this->params['breadcrumbs'][] = $this->title;
                 'value' => function($model) { return $model->sample_sku;},
                 'label'=>'拿样SKU',
             ],
+            [
+                'attribute'=>'submit_merchandiser',
+                'value' => function($model) { if($model->submit_merchandiser==1){return '是';}else{ return '否';} },
+                'contentOptions'=> ['style' => 'width: 50%; word-wrap: break-word;white-space:pre-line;'],
+                'format'=>'html',
+                'filterType'=>GridView::FILTER_SELECT2,
+                'filter'=>['1' => '是', '0' => '否'],
+                'filterWidgetOptions'=>[
+                    'pluginOptions'=>['allowClear'=>true],
+                ],
+                'filterInputOptions'=>['placeholder'=>'是否提交?'],
 
-//            'id',
-//            'sample_id',
-            'receipt_address',
-            'receipt_men',
-            'receipt_tel',
-            //'back_reason',
-            'back_way',
+
+            ],
             'tracking_number',
             'express_company',
-            'has_confirmation',
+            [
+                'attribute'=>'has_send',
+                'value' => function($model) { if($model->has_send==1){return '是';}else{ return '否';} },
+                'contentOptions'=> ['style' => 'width: 50%; word-wrap: break-word;white-space:pre-line;'],
+                'format'=>'html',
+                'filterType'=>GridView::FILTER_SELECT2,
+                'filter'=>['1' => '是', '0' => '否'],
+                'filterWidgetOptions'=>[
+                    'pluginOptions'=>['allowClear'=>true],
+                ],
+                'filterInputOptions'=>['placeholder'=>'寄出?'],
+            ],
+             [
+                'attribute'=>'has_confirmation',
+                'value' => function($model) { if($model->has_confirmation==1){return '是';}else{ return '否';} },
+                'contentOptions'=> ['style' => 'width: 50%; word-wrap: break-word;white-space:pre-line;'],
+                'format'=>'html',
+                'filterType'=>GridView::FILTER_SELECT2,
+                'filter'=>['1' => '是', '0' => '否'],
+                'filterWidgetOptions'=>[
+                    'pluginOptions'=>['allowClear'=>true],
+                ],
+                'filterInputOptions'=>['placeholder'=>'财务确认退款'],
+            ],
             'back_money',
-            'submit_merchandiser',
-            //'has_send',
+
             //'purchaser_memo',
             //'follower_memo',
             //'finalcial_memo',
-            //'create_time',
-            //'purchaser_follower_time',
-            //'follower_submit_time',
-            //'purchaser_finalcial_time',
-            //'finalcial_sure_time',
+            //'create_time:date',
+            'purchaser_follower_time:date',
+            'follower_submit_time:date',
+            'purchaser_finalcial_time:date',
+            'finalcial_sure_time:date',
 
         ],
     ]); ?>

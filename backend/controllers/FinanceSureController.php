@@ -14,7 +14,7 @@ use yii\filters\VerbFilter;
 /**
  * SampleReturnController implements the CRUD actions for SampleReturn model.
  */
-class FollowTrackingController extends Controller
+class FinanceSureController extends Controller
 {
     /**
      * {@inheritdoc}
