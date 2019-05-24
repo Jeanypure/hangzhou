@@ -130,4 +130,27 @@ class FinanceSureController extends Controller
 
         throw new NotFoundHttpException('The requested page does not exist.');
     }
+
+    /**
+     * 样品退费
+     * @param $id
+     * @return string|\yii\web\Response
+     * @throws NotFoundHttpException
+     */
+    public function actionFeeBack($id)
+    {
+        $model = $this->findModel($id);
+        if($model->load(Yii::$app->request->post()) ){
+            $model->fact_refund = Yii::$app->request->post()['Sample']['fact_refund'];
+            $model->has_refund = Yii::$app->request->post()['Sample']['has_refund'];
+            $model->sure_refund_men = Yii::$app->user->identity->username;
+            $model->sure_remark = Yii::$app->request->post()['Sample']['sure_remark'];
+            $model->save();
+            return $this->redirect(['index']);
+
+        }
+        return $this->renderAjax('fee_back',[
+            'model' => $model,
+        ]);
+    }
 }

@@ -153,3 +153,36 @@ $this->params['breadcrumbs'][] = $this->title;
         ],
     ]); ?>
 </div>
+<?php
+//财务确认退款
+use yii\bootstrap\Modal;
+Modal::begin([
+        'id' => 'sure-back',
+        'header' => '<h4 class="modal-title">样品费退款</h4>',
+        'footer' => '<a href="#" class="btn btn-primary" data-dismiss="modal">Close</a>',
+        'options' => [
+              'data-backdrop'=>'static',
+               'date-keyboard'=>false,
+        ],
+        'size'=>Modal::SIZE_LARGE
+]);
+Modal::end();
+?>
+<?php
+$moeny_back = Url::toRoute('fee-back');
+$js =<<<JS
+    $('.data-pay').on('click',function() {
+        $('.data-return').on('click',function() {
+            $.get('{$fee_return}',{id: $(this).closest('tr').data('key')},
+                function (data) {
+                 $('.modal-body').html(data); 
+                }
+            );
+          
+        });
+      
+    });
+JS;
+$this->registerJs($js);
+?>
+

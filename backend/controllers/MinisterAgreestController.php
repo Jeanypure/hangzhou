@@ -230,7 +230,7 @@ class MinisterAgreestController extends Controller
             }
            //确定退样 到样品表
             if(isset($post['Sample']['sample_return'])&&$post['Sample']['sample_return']==1){
-               $sample_return_res = $this->actionToSampleReturn($id);
+               $sample_return_res = $this->actionToSampleReturn($id,$sample_model->spur_info_id);
             }
             if ($sample_model->save(false)) {
                 Yii::$app->getSession()->setFlash('success', '保存成功');
@@ -290,8 +290,9 @@ class MinisterAgreestController extends Controller
      * 销售退样到退样表
      *
      */
-        public  function  actionToSampleReturn($sample_id){
-            $sql = "insert into sample_return (sample_id) values ($sample_id)";
+        public  function  actionToSampleReturn($sample_id,$pur_info_id){
+
+            $sql = "insert into sample_return (sample_id,pur_info_id) values ($sample_id,$pur_info_id)";
             $intoRes = Yii::$app->db->createCommand($sql)->execute();
             //todo 插入异常处理 重复记录反馈
             return $intoRes;
