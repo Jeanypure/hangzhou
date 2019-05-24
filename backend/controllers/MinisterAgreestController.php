@@ -2,6 +2,7 @@
 
 namespace backend\controllers;
 
+use backend\models\SampleReturn;
 use Yii;
 use backend\models\PurInfo;
 use backend\models\Sample;
@@ -291,10 +292,13 @@ class MinisterAgreestController extends Controller
      *
      */
         public  function  actionToSampleReturn($sample_id,$pur_info_id){
-
-            $sql = "insert into sample_return (sample_id,pur_info_id) values ($sample_id,$pur_info_id)";
-            $intoRes = Yii::$app->db->createCommand($sql)->execute();
-            //todo 插入异常处理 重复记录反馈
+            $model = SampleReturn::findOne(['sample_id'=>$sample_id]);
+            if(isset($model->sample_id)&&!empty($model->sample_id)){
+                return 1;
+            }else{
+                $sql = "insert into sample_return (sample_id,pur_info_id) values ($sample_id,$pur_info_id)";
+                $intoRes = Yii::$app->db->createCommand($sql)->execute();
+            }
             return $intoRes;
 
         }
