@@ -26,7 +26,7 @@ $this->params['breadcrumbs'][] = $this->title;
             ['class' => 'kartik\grid\CheckboxColumn'],
             ['class' => 'kartik\grid\ActionColumn',
                 'header' => '操作',
-                'template' => '{view} {return} ',
+                'template' => '{view} ',
                 'buttons' => [
                     'view' => function ($url, $model, $key) {
                         return Html::a('<span class="glyphicon glyphicon-check"></span>', $url, [
@@ -37,7 +37,7 @@ $this->params['breadcrumbs'][] = $this->title;
                             'data-id' => $key,
                         ] );
                     },
-                    'return' => function ($url, $model, $key) {
+                   /* 'return' => function ($url, $model, $key) {
                         return Html::a('<span class="glyphicon glyphicon-backward"></span>', $url, [
                             'title' => '确定退款',
                             'data-toggle' => 'modal',
@@ -45,7 +45,7 @@ $this->params['breadcrumbs'][] = $this->title;
                             'class' => 'data-return',
                             'data-id' => $key,
                         ] );
-                    },
+                    },*/
                 ],
             ],
 

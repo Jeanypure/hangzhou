@@ -141,10 +141,10 @@ class FinanceSureController extends Controller
     {
         $model = $this->findModel($id);
         if($model->load(Yii::$app->request->post()) ){
-            $model->fact_refund = Yii::$app->request->post()['Sample']['fact_refund'];
-            $model->has_refund = Yii::$app->request->post()['Sample']['has_refund'];
-            $model->sure_refund_men = Yii::$app->user->identity->username;
-            $model->sure_remark = Yii::$app->request->post()['Sample']['sure_remark'];
+            $model->back_money= Yii::$app->request->post()['SampleReturn']['back_money'];
+            $model->has_confirmation= Yii::$app->request->post()['SampleReturn']['has_confirmation'];
+            $model->confirmation_men = Yii::$app->user->identity->username;
+            $model->finalcial_memo = Yii::$app->request->post()['SampleReturn']['finalcial_memo'];
             $model->save();
             return $this->redirect(['index']);
 
