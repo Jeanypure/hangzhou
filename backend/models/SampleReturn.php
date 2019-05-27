@@ -104,6 +104,6 @@ class SampleReturn extends \yii\db\ActiveRecord
      */
     public function getPurinfo()
     {
-        return $this->hasMany(Purinfo::className(), ['pur_info_id' => 'pur_info_id']);
+        return $this->hasMany(PurInfo::className(), ['pur_info_id' => 'pur_info_id']);
     }
 }
