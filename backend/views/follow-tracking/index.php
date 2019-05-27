@@ -146,10 +146,10 @@ $this->params['breadcrumbs'][] = $this->title;
             //'follower_memo',
             //'finalcial_memo',
             //'create_time:date',
-            'purchaser_follower_time:date',
-            'follower_submit_time:date',
-            'purchaser_finalcial_time:date',
-            'finalcial_sure_time:date',
+            'purchaser_follower_time',
+            'follower_submit_time',
+            'purchaser_finalcial_time',
+            'finalcial_sure_time',
 
         ],
     ]); ?>

@@ -16,6 +16,44 @@ use kartik\builder\Form;
     </p>
     <?php $form = ActiveForm::begin(); ?>
     <?php
+        echo Form::widget([
+        'model'=>$model,
+        'form'=>$form,
+        'columns'=>4,
+        'attributes'=>[       // 3 column layout
+            'receipt_men'=>['type'=>Form::INPUT_TEXT, 'options'=>['placeholder'=>'']],
+            'receipt_tel'=>['type'=>Form::INPUT_TEXT, 'options'=>['placeholder'=>'']],
+            'back_reason'=>['type'=>Form::INPUT_TEXT, 'options'=>['placeholder'=>'']],
+            'back_way'=>['type'=>Form::INPUT_RADIO_LIST,
+                'items'=>[1=>'返回王飞鸟支付宝账号',2=>'返回相应对公账户']],
+
+        ],
+        'contentAfter' => ''
+
+    ]);
+        echo Form::widget([
+        'model'=>$model,
+        'form'=>$form,
+        'columns'=>2,
+        'attributes'=>[
+            'receipt_address'=>['type'=>Form::INPUT_TEXTAREA]
+        ]
+    ]);
+        echo Form::widget([
+        'model'=>$model,
+        'form'=>$form,
+        'columns'=>1,
+        'attributes'=>[
+            'purchaser_memo'=>['type'=>Form::INPUT_TEXTAREA, 'options'=>['placeholder'=>'']],
+        ]
+    ]);
+    ?>
+    <div class="form-group">
+        <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>
+    </div>
+
+    <?php ActiveForm::end(); ?>
+    <?php
     echo Form::widget([
     'model'=>$purinfo,
     'form'=>$form,
@@ -42,77 +80,36 @@ use kartik\builder\Form;
 
         ],
     ]);
-
-    echo Form::widget([
-            'model'=>$model,
-            'form'=>$form,
-             'columns'=>2,
-             'attributes'=>[
-                     'receipt_address'=>['type'=>Form::INPUT_TEXTAREA]
-             ]
-    ]);
     echo Form::widget([
         'model'=>$model,
         'form'=>$form,
-        'columns'=>4,
+        'columns'=>6,
+        'contentBefore'=>'<legend class="text-info"><h3>快递信息</h3></legend>',
         'attributes'=>[       // 3 column layout
-            'receipt_men'=>['type'=>Form::INPUT_TEXT, 'options'=>['placeholder'=>'']],
-            'receipt_tel'=>['type'=>Form::INPUT_TEXT, 'options'=>['placeholder'=>'']],
-            'back_reason'=>['type'=>Form::INPUT_TEXT, 'options'=>['placeholder'=>'']],
-            'back_way'=>['type'=>Form::INPUT_RADIO_LIST,
-                    'items'=>[1=>'返回王飞鸟支付宝账号',2=>'返回相应对公账户']],
+            'tracking_number'=>['type'=>Form::INPUT_STATIC, 'options'=>['placeholder'=>'']],
+            'express_company'=>['type'=>Form::INPUT_STATIC, 'options'=>['placeholder'=>'']],
+            'has_send'=>['type'=>Form::INPUT_RADIO_LIST,'items'=>['否','是']],
+            'follower_memo'=>['type'=>Form::INPUT_STATIC, 'options'=>['placeholder'=>'']],
+            'follower_submit_time'=>['type'=>Form::INPUT_STATIC, 'options'=>['placeholder'=>'']],
+        ],]);
 
-        ],
-        'contentAfter' => '<div ><br> <br></div>'
-
-    ]);
         ?>
     <?php
     echo Form::widget([
-            'model'=>$model,
-            'form'=>$form,
-            'columns'=>1,
-            'attributes'=>[
-                    'purchaser_memo'=>['type'=>Form::INPUT_TEXTAREA, 'options'=>['placeholder'=>'']],
-            ]
-    ]);
+        'model'=>$model,
+        'form'=>$form,
+        'columns'=>6,
+        'contentBefore'=>'<legend class="text-info"><h3>财务确认信息</h3></legend>',
+        'attributes'=>[       // 3 column layout
+            'back_money'=>['type'=>Form::INPUT_STATIC, 'options'=>['placeholder'=>'']],
+            'has_confirmation'=>['type'=>Form::INPUT_RADIO_LIST,'items'=>['否','是']],
+            'finalcial_memo'=>['type'=>Form::INPUT_STATIC, 'options'=>['placeholder'=>'']],
+            'finalcial_sure_time'=>['type'=>Form::INPUT_STATIC, 'options'=>['placeholder'=>'']],
+        ],]);
     ?>
 
 
 
 
-
-    <?= $form->field($model, 'tracking_number')->textInput(['maxlength' => true]) ?>
-
-    <?= $form->field($model, 'express_company')->textInput(['maxlength' => true]) ?>
-    <?= $form->field($model, 'has_send')->textInput() ?>
-
-    <?= $form->field($model, 'has_confirmation')->textInput() ?>
-
-    <?= $form->field($model, 'back_money')->textInput(['maxlength' => true]) ?>
-
-    <?= $form->field($model, 'submit_merchandiser')->textInput() ?>
-
-
-
-    <?= $form->field($model, 'follower_memo')->textInput(['maxlength' => true]) ?>
-
-    <?= $form->field($model, 'finalcial_memo')->textInput(['maxlength' => true]) ?>
-
-    <?= $form->field($model, 'create_time')->textInput() ?>
-
-    <?= $form->field($model, 'purchaser_follower_time')->textInput() ?>
-
-    <?= $form->field($model, 'follower_submit_time')->textInput() ?>
-
-    <?= $form->field($model, 'purchaser_finalcial_time')->textInput() ?>
-
-    <?= $form->field($model, 'finalcial_sure_time')->textInput() ?>
-
-    <div class="form-group">
-        <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>
-    </div>
-
-    <?php ActiveForm::end(); ?>
 
 </div>

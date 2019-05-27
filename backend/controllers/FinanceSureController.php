@@ -145,6 +145,7 @@ class FinanceSureController extends Controller
             $model->has_confirmation= Yii::$app->request->post()['SampleReturn']['has_confirmation'];
             $model->confirmation_men = Yii::$app->user->identity->username;
             $model->finalcial_memo = Yii::$app->request->post()['SampleReturn']['finalcial_memo'];
+            $model->finalcial_sure_time = date('Y-m-d H:i:s');
             $model->save();
             return $this->redirect(['index']);
 

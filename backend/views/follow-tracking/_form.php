@@ -105,14 +105,19 @@ use kartik\builder\Form;
     ]);
     ?>
 
-
-    <?= $form->field($model, 'has_confirmation')->textInput() ?>
-
-    <?= $form->field($model, 'back_money')->textInput(['maxlength' => true]) ?>
-
-    <?= $form->field($model, 'submit_merchandiser')->textInput() ?>
-
-    <?= $form->field($model, 'finalcial_memo')->textInput(['maxlength' => true]) ?>
+    <?php
+    echo Form::widget([
+        'model'=>$model,
+        'form'=>$form,
+        'columns'=>6,
+        'contentBefore'=>'<legend class="text-info"><h3>财务确认信息</h3></legend>',
+        'attributes'=>[       // 3 column layout
+            'back_money'=>['type'=>Form::INPUT_STATIC, 'options'=>['placeholder'=>'']],
+            'has_confirmation'=>['type'=>Form::INPUT_RADIO_LIST,'items'=>['否','是']],
+            'finalcial_memo'=>['type'=>Form::INPUT_STATIC, 'options'=>['placeholder'=>'']],
+            'finalcial_sure_time'=>['type'=>Form::INPUT_STATIC, 'options'=>['placeholder'=>'']],
+        ],]);
+    ?>
 
 
 </div>

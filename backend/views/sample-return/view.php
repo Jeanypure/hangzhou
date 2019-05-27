@@ -45,10 +45,10 @@ $this->params['breadcrumbs'][] = $this->title;
             'follower_memo',
             'finalcial_memo',
             'create_time',
-            'purchaser_follower_time',
-            'follower_submit_time',
-            'purchaser_finalcial_time',
-            'finalcial_sure_time',
+            'purchaser_follower_time:datetime',
+            'follower_submit_time:datetime',
+            'purchaser_finalcial_time:datetime',
+            'finalcial_sure_time:datetime',
         ],
     ]) ?>
 

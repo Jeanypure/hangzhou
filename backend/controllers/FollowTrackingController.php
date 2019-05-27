@@ -89,9 +89,10 @@ class FollowTrackingController extends Controller
         $model = $this->findModel($id);
         $purinfo = PurInfo::findOne($model->pur_info_id);
         $sample = Sample::findOne($model->sample_id);
-        if ($model->load(Yii::$app->request->post())&&$model->save(false) ) {
+        if ($model->load(Yii::$app->request->post()) ) {
+            $model->follower_submit_time = date('Y-m-d H:i:s');
+            $model->save();
               return $this->redirect(['update','id'=>$model->id]);
-//            return $this->redirect(['view', 'id' => $model->id]);
         }
 
         return $this->render('update', [

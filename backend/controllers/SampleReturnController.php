@@ -91,7 +91,6 @@ class SampleReturnController extends Controller
         $sample = Sample::findOne($model->sample_id);
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
               return $this->redirect(['update','id'=>$model->id]);
-//            return $this->redirect(['view', 'id' => $model->id]);
         }
 
         return $this->render('update', [
@@ -130,4 +129,50 @@ class SampleReturnController extends Controller
 
         throw new NotFoundHttpException('The requested page does not exist.');
     }
+
+    public function actionSubmit()
+    {
+        $ids = $_POST['id'];
+        $product_ids = '';
+        foreach ($ids as $k => $v) {
+            $product_ids .= $v . ',';
+        }
+        $ids_str = trim($product_ids, ',');
+        $time = date('Y-m-d H:i:s');
+        if (isset($ids) && !empty($ids)) {
+            $res = Yii::$app->db->createCommand("
+            update `sample_return` set  submit_merchandiser = 1,purchaser_follower_time='$time' where `id` in ($ids_str);
+            ")->execute();
+            if ($res) {
+                echo 'success';
+            }
+        } else {
+            echo 'error';
+        }
+    }
+
+
+    public function actionCancel()
+    {
+
+        $ids = $_POST['id'];
+        $product_ids = '';
+        foreach ($ids as $k => $v) {
+            $product_ids .= $v . ',';
+        }
+        $ids_str = trim($product_ids, ',');
+
+        if (isset($ids) && !empty($ids)) {
+            $res = Yii::$app->db->createCommand("
+                     update `sample_return` set  submit_merchandiser = 0 where `id` in ($ids_str)
+            ")->execute();
+            if ($res) {
+                echo 'success';
+            }
+        } else {
+            echo 'error';
+        }
+    }
+
 }
+

@@ -14,17 +14,14 @@ $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="sample-return-index">
 
-    <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
-
     <p>
-        <?php
-//        echo  Html::a('Create Sample Return', ['create'], ['class' => 'btn btn-success'])
-        ?>
+        <?= Html::button('提交跟单', ['id' => 'to-document-attached', 'class' => 'btn btn-primary']) ;?>
+        <?=  Html::button('取消提交', ['id' => 'cancel', 'class' => 'btn btn-info']) ?>
     </p>
-
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
+        'id' => 'sample-fee-back',
         'columns' => [
             ['class' => 'kartik\grid\SerialColumn'],
             ['class' => 'kartik\grid\CheckboxColumn'],
@@ -148,16 +145,81 @@ $this->params['breadcrumbs'][] = $this->title;
                 'filterInputOptions'=>['placeholder'=>'财务确认退款'],
             ],
             'back_money',
-
-            //'purchaser_memo',
-            //'follower_memo',
-            //'finalcial_memo',
             //'create_time:date',
-            'purchaser_follower_time:date',
-            'follower_submit_time:date',
-            'purchaser_finalcial_time:date',
-            'finalcial_sure_time:date',
+            'purchaser_follower_time',
+            'follower_submit_time',
+            'purchaser_finalcial_time',
+            'finalcial_sure_time',
 
         ],
     ]); ?>
 </div>
+<?php
+$submit = Url::toRoute('submit');
+$unsubmit = Url::toRoute('cancel');
+//提交评审
+$is_submit_manager =<<<JS
+    $('#to-document-attached').on('click',function() {
+            var button = $(this);
+            console.log(123);
+            button.attr('disabled','disabled');
+            var ids = $("#sample-fee-back").yiiGridView("getSelectedRows");
+            console.log(ids);
+            if(ids.length ==0) alert('请选择产品后再操作!');
+            $.ajax({
+            url:'{$submit}',
+            type:'post',
+            data:{id:ids},
+            success:function(res){
+                if(res=='success') alert('提交成功!');
+                 button.attr('disabled',false);
+                location.reload();
+                /*if(res=='success') {
+                     button.attr('disabled',false);
+                     $.pjax.reload({container:"#sample-list});  //Reload GridView
+                }*/
+               
+
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+                button.attr('disabled',false);
+            }
+            
+            });
+      
+    });
+//取消提交
+
+    $('#cancel').on('click',function() {
+                var button = $(this);
+                button.attr('disabled','disabled');
+                var ids = $("#sample-fee-back").yiiGridView("getSelectedRows");
+                console.log(ids);
+                if(ids.length ==0) alert('请选择产品后再操作!');
+                $.ajax({
+                url:'{$unsubmit}',
+                type:'post',
+                data:{id:ids},
+                success:function(res){
+                    if(res=='success') alert('取消成功!');
+                    button.attr('disabled',false);
+                    location.reload();
+                     /*if(res=='success') {
+                     button.attr('disabled',false);
+                     $.pjax.reload({container:"#sample-hhh-list});  //Reload GridView
+               }*/
+    
+                },
+                error: function (jqXHR, textStatus, errorThrown) {
+                    button.attr('disabled',false);
+                }
+                
+                });
+          
+        });
+JS;
+
+
+
+$this->registerJs($is_submit_manager);
+?>

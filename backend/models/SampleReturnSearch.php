@@ -52,7 +52,8 @@ class SampleReturnSearch extends SampleReturn
                `sample`.pay_way,`sample`.pd_sku,`sample`.sample_sku,`sample`.fact_pay_amount,
                 `sample_return`.id,`sample_return`.submit_merchandiser,`sample_return`.has_send,
                 `sample_return`.has_confirmation,`sample_return`.back_money,`sample_return`.tracking_number,
-                `sample_return`.express_company'
+                `sample_return`.express_company,`sample_return`.purchaser_follower_time,`sample_return`.follower_submit_time,
+                `sample_return`.purchaser_finalcial_time,`sample_return`.finalcial_sure_time',
 
             ])
             ->joinWith('sample')
