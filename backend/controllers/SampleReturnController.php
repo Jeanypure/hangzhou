@@ -54,8 +54,15 @@ class SampleReturnController extends Controller
      */
     public function actionView($id)
     {
+        $model = $this->findModel($id);
+        if ($model->load(Yii::$app->request->post()) ) {
+            $model->fee_back_pic = Yii::$app->request->post()['SampleReturn']['fee_back_pic'];
+            $model->pic_submit_finance = 1;
+            $model->save(false);
+            return $this->redirect(['index']);
+        }
         return $this->render('view', [
-            'model' => $this->findModel($id),
+            'model' => $model,
         ]);
     }
 

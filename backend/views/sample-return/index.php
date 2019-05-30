@@ -25,7 +25,7 @@ $this->params['breadcrumbs'][] = $this->title;
             ['class' => 'kartik\grid\SerialColumn'],
             ['class' => 'kartik\grid\CheckboxColumn'],
             ['class' => 'kartik\grid\ActionColumn',
-             'template' => '{update}',
+             'template' => '{update} {view}',
             ],
             [
                 'class' => 'yii\grid\Column',

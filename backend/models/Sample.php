@@ -46,7 +46,7 @@ class Sample extends \yii\db\ActiveRecord
         return [
             [['purchaser_result','spur_info_id','fee_return','is_agreest',
                 'procurement_cost', 'sample_freight', 'pay_amount','pay_way','pd_sku'], 'required'],
-            [['audit_team_result','minister_result','has_arrival','for_free', 'spur_info_id', 'is_audit', 'is_agreest',  'fee_return', 'audit_mem1', 'applicant'], 'integer'],
+            [['pic_submit_finance','audit_team_result','minister_result','has_arrival','for_free', 'spur_info_id', 'is_audit', 'is_agreest',  'fee_return', 'audit_mem1', 'applicant'], 'integer'],
             [['procurement_cost', 'sample_freight', 'else_fee', 'pay_amount'], 'number'],
             [['payer','sample_return','is_purchase','sure_purchase_time','pay_at','fact_pay_amount','sample_submit1',
                 'sample_submit2','submit1_at','submit2_at','cancel1_at','cancel2_at','has_pay','is_quality',
@@ -54,6 +54,7 @@ class Sample extends \yii\db\ActiveRecord
             [['pay_way', 'mark'], 'string', 'max' => 500],
             [['audit_team_reason','minister_reason'], 'string', 'max' => 100],
             [['pd_sku',], 'string', 'max' => 60],
+            [['fee_back_pic',], 'string', 'max' => 300],
 
         ];
     }
