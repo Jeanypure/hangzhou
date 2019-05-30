@@ -46,6 +46,8 @@ class SampleReturnSearch extends SampleReturn
      */
     public function search($params)
     {
+        $username = Yii::$app->user->identity->username;
+        $role = Yii::$app->authManager->getRolesByUser(Yii::$app->user->getId());
         $query = SampleReturn::find()
             ->select(['
                `pur_info`.pur_info_id,`pur_info`.pd_title,`pur_info`.pur_group,`pur_info`.purchaser,`pur_info`.pd_pic_url,
@@ -57,11 +59,18 @@ class SampleReturnSearch extends SampleReturn
 
             ])
             ->joinWith('sample')
-            ->joinWith('purinfo');
+            ->joinWith('purinfo')
 
+        ;
+        if (array_key_exists('财务',$role)){
+           $this->has_confirmation=0;
+        }elseif (array_key_exists('采购A',$role)||array_key_exists('采购B',$role)
+            ||array_key_exists('采购主管',$role)){
+            $query ->andWhere(['`pur_info`.purchaser'=>$username]);
+            $this->submit_merchandiser=0;
+        }
         // add conditions that should always apply here
 
-//        echo  $query->createCommand()->getRawSql();die;
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
         ]);

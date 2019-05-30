@@ -3,7 +3,6 @@
 use yii\helpers\Html;
 use kartik\grid\GridView;
 use yii\helpers\Url;
-use kartik\daterange\DateRangePicker;
 
 /* @var $this yii\web\View */
 /* @var $searchModel backend\models\SampleReturnSearch */
@@ -25,31 +24,9 @@ $this->params['breadcrumbs'][] = $this->title;
         'columns' => [
             ['class' => 'kartik\grid\SerialColumn'],
             ['class' => 'kartik\grid\CheckboxColumn'],
-           /* ['class' => 'kartik\grid\ActionColumn',
-                'header' => '操作',
-                'template' => '{update} {view} {return} ',
-                'buttons' => [
-                    'view' => function ($url, $model, $key) {
-                        return Html::a('<span class="glyphicon glyphicon-check"></span>', $url, [
-                            'title' => '付款',
-                            'data-toggle' => 'modal',
-                            'data-target' => '#pay-modal',
-                            'class' => 'data-pay',
-                            'data-id' => $key,
-                        ] );
-                    },
-                    'return' => function ($url, $model, $key) {
-                        return Html::a('<span class="glyphicon glyphicon-backward"></span>', $url, [
-                            'title' => '确定退款',
-                            'data-toggle' => 'modal',
-                            'data-target' => '#return-modal',
-                            'class' => 'data-return',
-                            'data-id' => $key,
-                        ] );
-                    },
-                ],
-            ],*/
-            ['class' => 'kartik\grid\ActionColumn'],
+            ['class' => 'kartik\grid\ActionColumn',
+             'template' => '{update}',
+            ],
             [
                 'class' => 'yii\grid\Column',
                 'headerOptions' => [
