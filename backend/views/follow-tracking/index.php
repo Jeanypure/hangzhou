@@ -9,7 +9,7 @@ use kartik\daterange\DateRangePicker;
 /* @var $searchModel backend\models\SampleReturnSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = '跟单填退样物流单号';
+$this->title = '填退样物流单号';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="sample-return-index">

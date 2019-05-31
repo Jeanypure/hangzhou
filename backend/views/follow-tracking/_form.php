@@ -20,7 +20,7 @@ use kartik\builder\Form;
         'model'=>$model,
         'form'=>$form,
         'columns'=>4,
-        'contentBefore'=>'<legend class="text-info"><h3>跟单填快递单号</h3></legend>',
+        'contentBefore'=>'<legend class="text-info"><h3>填快递单号</h3></legend>',
         'attributes'=>[
             'tracking_number'=>['type'=>Form::INPUT_TEXT, 'options'=>['placeholder'=>'']],
             'express_company'=>['type'=>Form::INPUT_TEXT, 'options'=>['placeholder'=>'']],

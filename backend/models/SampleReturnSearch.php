@@ -47,6 +47,7 @@ class SampleReturnSearch extends SampleReturn
     public function search($params)
     {
         $username = Yii::$app->user->identity->username;
+        $group = Yii::$app->db->createCommand("select sub_company from company where  leader='$username'")->queryOne();
         $role = Yii::$app->authManager->getRolesByUser(Yii::$app->user->getId());
         $query = SampleReturn::find()
             ->select(['
@@ -69,6 +70,9 @@ class SampleReturnSearch extends SampleReturn
             ||array_key_exists('采购主管',$role)){
             $query ->andWhere(['`pur_info`.purchaser'=>$username]);
             $this->submit_merchandiser=0;
+        }elseif(array_key_exists('销售部长',$role)){
+            $query->andWhere(['`pur_info`.pur_group'=>$group['sub_company']]);
+
         }
         // add conditions that should always apply here
 
