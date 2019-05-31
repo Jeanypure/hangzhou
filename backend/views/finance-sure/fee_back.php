@@ -13,7 +13,13 @@ $this->params['breadcrumbs'][] = $this->title;
 ?>
 
 <div class="pur-info-form">
+    <p>
+        <?php
+        $pic_url = "http://eaymall.com{$model->fee_back_pic}";
+        ?>
+        <img src="<?php echo $pic_url;?>" alt="" width="100" height="100">
 
+    </p>
     <?php $form = ActiveForm::begin(); ?>
 
     <?php

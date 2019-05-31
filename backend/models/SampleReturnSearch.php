@@ -22,7 +22,7 @@ class SampleReturnSearch extends SampleReturn
             [['receipt_address', 'receipt_men', 'receipt_tel', 'back_reason', 'tracking_number', 'express_company',
                 'purchaser_memo', 'follower_memo', 'finalcial_memo', 'create_time', 'purchaser_follower_time',
                 'follower_submit_time', 'purchaser_finalcial_time', 'finalcial_sure_time',
-                'pd_sku', 'sample_sku', 'pd_title','pur_group','purchaser',
+                'pd_sku', 'sample_sku', 'pd_title','pur_group','purchaser','pic_submit_finance'
             ], 'safe'],
             [['back_money'], 'number'],
         ];
@@ -55,7 +55,7 @@ class SampleReturnSearch extends SampleReturn
                 `sample_return`.id,`sample_return`.submit_merchandiser,`sample_return`.has_send,
                 `sample_return`.has_confirmation,`sample_return`.back_money,`sample_return`.tracking_number,
                 `sample_return`.express_company,`sample_return`.purchaser_follower_time,`sample_return`.follower_submit_time,
-                `sample_return`.purchaser_finalcial_time,`sample_return`.finalcial_sure_time',
+                `sample_return`.purchaser_finalcial_time,`sample_return`.finalcial_sure_time, `sample_return`.pic_submit_finance',
 
             ])
             ->joinWith('sample')
@@ -64,6 +64,7 @@ class SampleReturnSearch extends SampleReturn
         ;
         if (array_key_exists('财务',$role)){
            $this->has_confirmation=0;
+           $this->pic_submit_finance=1;
         }elseif (array_key_exists('采购A',$role)||array_key_exists('采购B',$role)
             ||array_key_exists('采购主管',$role)){
             $query ->andWhere(['`pur_info`.purchaser'=>$username]);
@@ -97,6 +98,7 @@ class SampleReturnSearch extends SampleReturn
             'follower_submit_time' => $this->follower_submit_time,
             'purchaser_finalcial_time' => $this->purchaser_finalcial_time,
             'finalcial_sure_time' => $this->finalcial_sure_time,
+            'pic_submit_finance' => $this->pic_submit_finance,
         ]);
 
         $query->andFilterWhere(['like', 'receipt_address', $this->receipt_address])

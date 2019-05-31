@@ -100,8 +100,8 @@ $this->params['breadcrumbs'][] = $this->title;
                 'label'=>'拿样SKU',
             ],
             [
-                'attribute'=>'submit_merchandiser',
-                'value' => function($model) { if($model->submit_merchandiser==1){return '是';}else{ return '否';} },
+                'attribute'=>'pic_submit_finance',
+                'value' => function($model) { if($model->pic_submit_finance==1){return '是';}else{ return '否';} },
                 'contentOptions'=> ['style' => 'width: 50%; word-wrap: break-word;white-space:pre-line;'],
                 'format'=>'html',
                 'filterType'=>GridView::FILTER_SELECT2,
@@ -110,12 +110,9 @@ $this->params['breadcrumbs'][] = $this->title;
                     'pluginOptions'=>['allowClear'=>true],
                 ],
                 'filterInputOptions'=>['placeholder'=>'是否提交?'],
-
-
             ],
-            'tracking_number',
-            'express_company',
-            [
+
+            /*[
                 'attribute'=>'has_send',
                 'value' => function($model) { if($model->has_send==1){return '是';}else{ return '否';} },
                 'contentOptions'=> ['style' => 'width: 50%; word-wrap: break-word;white-space:pre-line;'],
@@ -126,7 +123,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     'pluginOptions'=>['allowClear'=>true],
                 ],
                 'filterInputOptions'=>['placeholder'=>'寄出?'],
-            ],
+            ],*/
              [
                 'attribute'=>'has_confirmation',
                 'value' => function($model) { if($model->has_confirmation==1){return '是';}else{ return '否';} },

@@ -83,6 +83,8 @@ class SampleReturn extends \yii\db\ActiveRecord
             'follower_submit_time' => '跟单提交单号时间',
             'purchaser_finalcial_time' => '采购提交财务时间',
             'finalcial_sure_time' => '财务确定时间',
+            'fee_back_pic' => '退款图片',
+            'pic_submit_finance' => '采购提交到财务',
             //pur_info
             'purchaser' => '采购人',
             'pur_group' => '部门号',
