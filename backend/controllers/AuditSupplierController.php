@@ -218,7 +218,7 @@ class AuditSupplierController extends Controller
         // 获取句柄
         $output = fopen('php://output', 'w') or die("can't open php://output");
 
-        // 输出头部标题
+        // 输出头部标题s
         $this->actionFputcsv2($output, $tableHead);
 
         //记录
@@ -288,7 +288,7 @@ class AuditSupplierController extends Controller
             'r.bill_type','r.pay_card','r.pay_name','r.pay_bank','r.sup_remark','r.pay_cycleTime_type','r.account_type',
             'r.account_proportion','r.has_cooperate','r.sale_company','r.supplier_address','r.supplier_pay_methon',
             't.supplier_id','t.contact_name','t.contact_tel','t.contact_address','t.contact_qq','t.contact_wechat','t.contact_wangwang',
-            't.contact_memo','r.pay_name']);
+            't.contact_memo','r.pay_name','r.origin_product_source']);
         $query->from(YaeSupplier::tableName() . 'r');
         $query->leftJoin('supplier_contact t', 't.supplier_id=r.id');
         $data = $query->Where('r.id ='.$id)->orderBy('r.id desc')->asArray()->all();
@@ -315,6 +315,7 @@ class AuditSupplierController extends Controller
            // "custentitypayment_method" => $data[0]['supplier_pay_methon'],
             "custentity_wangwang" => $data[0]['contact_wangwang'],
             "custentity_payee" => $data[0]['pay_name'],
+            "custentity_originalplaceofproduct" => $data[0]['origin_product_source'],
         ];
         $res = $this->actionDoVendorCurl($vendor_arr);
         if (is_string($res)){
