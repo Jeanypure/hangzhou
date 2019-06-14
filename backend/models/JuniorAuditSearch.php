@@ -48,7 +48,8 @@ class JuniorAuditSearch extends PurInfo
             ->andWhere(['is_submit'=>1])
             ->andWhere(['member2'=>'Becky'])
             ->orderBy('pur_info_id desc');
-        $this->audit_c = 1;
+        $this->audit_b = 1;
+        $this->audit_c = 0;
 
         // add conditions that should always apply here
 
