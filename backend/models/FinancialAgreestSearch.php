@@ -43,6 +43,8 @@ class FinancialAgreestSearch extends PurInfo
      */
     public function search($params)
     {
+        $role = Yii::$app->authManager->getRolesByUser(Yii::$app->user->getId());
+        if(array_key_exists('超级管理员',$role)){
         $query = Sample::find()
             ->select(['
                     `pur_info`.pur_info_id,
@@ -56,7 +58,28 @@ class FinancialAgreestSearch extends PurInfo
         ->andWhere(['sample_submit2'=>1])
         ->andWhere(['is_agreest'=>1])
         ->orderBy('pur_info_id desc')
-        ;
+        ;}else{
+            $username = Yii::$app->user->identity->username;
+            $groupPayer = [
+                'Michael' => [1],
+                '刘胜男' => [2],
+                'Xiexiaolong' => [1,2]
+            ];
+            $query = Sample::find()
+                ->select(['
+                    `pur_info`.pur_info_id,
+                    `pur_info`.pd_title,`pur_info`.pd_title_en,`pur_info`.purchaser,`pur_info`.pd_pic_url,
+                    `pur_info`.pur_group,`pur_info`.master_result,`pur_info`.master_mark,
+                    `sample`.sample_id,`sample`.payer,`sample`.pay_at,`sample`.has_pay,`sample`.sample_return, 
+                    `sample`.pay_amount,`sample`.pd_sku,`sample`.sample_sku,`sample`.pay_way,`sample`.mark,`sample`.for_free'
+                ])
+                ->joinWith('purinfo')
+                ->andWhere(['sample_submit1'=>1])
+                ->andWhere(['sample_submit2'=>1])
+                ->andWhere(['in','substring_index(`pur_info`.pur_group,",",1)',$groupPayer[$username]])
+                ->andWhere(['is_agreest'=>1])
+                ->orderBy('pur_info_id desc');
+        }
         $this->has_pay = 0;
         // add conditions that should always apply here
 
