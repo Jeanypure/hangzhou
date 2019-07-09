@@ -15,7 +15,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
 
     <p>
-        <?= Html::a('直接创建产品档案', ['create'], ['class' => 'btn btn-success']) ?>
+        <?php echo Html::a('直接创建产品档案', ['create'], ['class' => 'btn btn-success']) ?>
         <?php echo Html::button('复制选中产品',['class' => 'btn btn-default' ,'id'=>'copy-good'])?>
 
         <?php echo Html::button('确认提交',['class' => 'btn btn-info' ,'id'=>'is_submit'])?>
