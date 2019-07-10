@@ -5,7 +5,7 @@ namespace backend\controllers;
 use Yii;
 use backend\models\VendorPool;
 use backend\models\VendorPoolSearch;
-//use yii\web\Controller;
+use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 
@@ -30,18 +30,31 @@ class VendorPoolController extends Controller
     }
 
     /**
-     * Lists all VendorPool models.
-     * @return mixed
+     * @return string
+     * @throws \yii\db\Exception
+     * 按供应商名字搜对应的编码
+     * 不能看到所有供应商列表
      */
     public function actionIndex()
     {
-        $searchModel = new VendorPoolSearch();
-        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        $model = new VendorPool();
+        if(Yii::$app->request->post()) {
+            $post = Yii::$app->request->post();
+            $name = $post['supplier_name'];
+            if (!empty($name) && isset($name)) {
+                $sql = "select supplier_code,supplier_name from vendor_pool where supplier_name like '%" . $name . "%'";
+                $ret = Yii::$app->db->createCommand($sql)->queryAll();
+                if(empty($ret)){
+                    return 'empty!';
+                }
+                return  json_encode($ret,true);
+            }
+        }else{
+            return $this->render('suppliername', [
+                'model' => $model,
+            ]);
+        }
 
-        return $this->render('index', [
-            'searchModel' => $searchModel,
-            'dataProvider' => $dataProvider,
-        ]);
     }
 
     /**
@@ -124,4 +137,10 @@ class VendorPoolController extends Controller
 
         throw new NotFoundHttpException('The requested page does not exist.');
     }
+
+
+
+
+
+
 }
